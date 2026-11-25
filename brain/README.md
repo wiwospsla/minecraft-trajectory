@@ -1,5 +1,7 @@
 # brain/ —— 外挂式轨迹库 + A/B 物理隔离认知大脑
 
+> 📖 架构与跨学科方法论总述：[`ARCHITECTURE_OVERVIEW.md`](./ARCHITECTURE_OVERVIEW.md)
+
 [![brain CI](https://img.shields.io/badge/brain%20CI-0%20Token%20tests-success)](../.github/workflows/brain-ci.yml)
 [![zero new deps](https://img.shields.io/badge/npm%20deps-0%20added-blue)]()
 [![A%2FB isolation](https://img.shields.io/badge/environment%20A%2FB-physically%20isolated-informational)]()
