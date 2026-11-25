@@ -1,0 +1,62 @@
+[
+  {
+    "id": "wood",
+    "label": "Gather wood",
+    "conditions": [{ "inv": "oak_log", "count": 1 }]
+  },
+  {
+    "id": "planks",
+    "label": "Make planks",
+    "conditions": [{ "inv": "oak_planks", "count": 1 }]
+  },
+  {
+    "id": "table",
+    "label": "Craft a crafting table",
+    "conditions": [{ "inv": "crafting_table", "count": 1 }]
+  },
+  {
+    "id": "wood_pick",
+    "label": "Craft a wooden pickaxe",
+    "conditions": [{ "inv": "wooden_pickaxe", "count": 1 }]
+  },
+  {
+    "id": "stone",
+    "label": "Mine cobblestone",
+    "conditions": [{ "inv": "cobblestone", "count": 1 }]
+  },
+  {
+    "id": "stone_pick",
+    "label": "Craft a stone pickaxe",
+    "conditions": [{ "inv": "stone_pickaxe", "count": 1 }]
+  },
+  {
+    "id": "iron",
+    "label": "Mine raw iron",
+    "conditions": [{ "inv": "raw_iron", "count": 1 }]
+  },
+  {
+    "id": "iron_pick",
+    "label": "Smelt and craft an iron pickaxe",
+    "conditions": [{ "inv": "iron_pickaxe", "count": 1 }]
+  },
+  {
+    "id": "diamond",
+    "label": "Mine a diamond",
+    "conditions": [{ "inv": "diamond", "count": 1 }]
+  },
+  {
+    "id": "obsidian",
+    "label": "Mine obsidian",
+    "conditions": [{ "inv": "obsidian", "count": 1 }]
+  },
+  {
+    "id": "portal",
+    "label": "Build a nether portal",
+    "conditions": [{ "inv": "obsidian", "count": 10 }]
+  },
+  {
+    "id": "nether",
+    "label": "Enter the Nether",
+    "conditions": [{ "dimension": "the_nether" }]
+  }
+]

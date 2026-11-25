@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "description": "Wiki-sourced prior long chains (cold-start only). Each entry is shaped exactly like a deliberate.mjs-extracted multi-step stitched macro (see policy_table.mjs's sanitizeStitchedMacro()), so policy_table.mjs can load these directly into stitched_macros without candidates.mjs/decide.mjs needing any special-case code. source:'wiki_prior' marks provenance only (read-only, descriptive) -- it never changes how decide.mjs scores the macro; macro_commitment is the ONLY knob that governs trust, and it starts modest (0.6, below the 1.0 neutral) so a real native (locally-learned) macro that actually gets executed can naturally out-rank a prior that has never been tried, as soon as the native one earns even a middling completion_rate. These chains are never executed directly by deliberate.mjs (environment B never drives the game) -- they only ever become `source:'stitched'`-style candidates once offered by candidates.mjs, exactly like any other stitched macro.",
+  "macros": [
+    {
+      "id": "wiki_prior:wood_tools",
+      "key": "gather:wood_log",
+      "tool": "gather",
+      "args": { "block": "oak_log", "count": 3 },
+      "requires": [],
+      "ensures": [{ "inv": "oak_log", "count": 3 }],
+      "steps": [
+        { "key": "gather:wood_log", "tool": "gather", "args": { "block": "oak_log", "count": 3 }, "requires": [], "ensures": [{ "inv": "oak_log", "count": 3 }] },
+        { "key": "craft:wood_planks", "tool": "craft", "args": { "item": "oak_planks", "count": 4 }, "requires": [{ "inv": "oak_log", "count": 1 }], "ensures": [{ "inv": "oak_planks", "count": 4 }] },
+        { "key": "craft:crafting_table", "tool": "craft", "args": { "item": "crafting_table", "count": 1 }, "requires": [{ "inv": "oak_planks", "count": 4 }], "ensures": [{ "inv": "crafting_table", "count": 1 }] },
+        { "key": "place:crafting_table", "tool": "place", "args": { "block": "crafting_table", "relativePlacement": true }, "requires": [{ "inv": "crafting_table", "count": 1 }], "ensures": [] },
+        { "key": "craft:stick", "tool": "craft", "args": { "item": "stick", "count": 4 }, "requires": [{ "inv": "oak_planks", "count": 2 }], "ensures": [{ "inv": "stick", "count": 4 }] },
+        { "key": "craft:wooden_pickaxe", "tool": "craft", "args": { "item": "wooden_pickaxe", "count": 1 }, "requires": [{ "inv": "oak_planks", "count": 3 }, { "inv": "stick", "count": 2 }], "ensures": [{ "inv": "wooden_pickaxe", "count": 1 }] }
+      ],
+      "span_from_idx": -1,
+      "span_to_idx": 3,
+      "phase_label": "idx -1 -> idx 3 (wiki prior: wood_log -> planks -> table -> place -> stick -> wooden_pickaxe)",
+      "smoothness": "wiki_prior",
+      "source": "wiki_prior",
+      "macro_commitment": 0.6,
+      "completion_rate": null
+    },
+    {
+      "id": "wiki_prior:stone_tools",
+      "key": "gather:cobblestone",
+      "tool": "gather",
+      "args": { "block": "cobblestone", "count": 3 },
+      "requires": [{ "inv": "wooden_pickaxe", "count": 1 }],
+      "ensures": [{ "inv": "cobblestone", "count": 3 }],
+      "steps": [
+        { "key": "gather:cobblestone", "tool": "gather", "args": { "block": "cobblestone", "count": 3 }, "requires": [{ "inv": "wooden_pickaxe", "count": 1 }], "ensures": [{ "inv": "cobblestone", "count": 3 }] },
+        { "key": "craft:stone_pickaxe", "tool": "craft", "args": { "item": "stone_pickaxe", "count": 1 }, "requires": [{ "inv": "cobblestone", "count": 3 }, { "inv": "stick", "count": 2 }], "ensures": [{ "inv": "stone_pickaxe", "count": 1 }] }
+      ],
+      "span_from_idx": 3,
+      "span_to_idx": 5,
+      "phase_label": "idx 3 -> idx 5 (wiki prior: cobblestone -> stone_pickaxe)",
+      "smoothness": "wiki_prior",
+      "source": "wiki_prior",
+      "macro_commitment": 0.6,
+      "completion_rate": null
+    },
+    {
+      "id": "wiki_prior:iron_tools",
+      "key": "gather:iron_ore",
+      "tool": "gather",
+      "args": { "block": "iron_ore", "count": 3 },
+      "requires": [{ "inv": "stone_pickaxe", "count": 1 }],
+      "ensures": [{ "inv": "raw_iron", "count": 3 }],
+      "steps": [
+        { "key": "gather:iron_ore", "tool": "gather", "args": { "block": "iron_ore", "count": 3 }, "requires": [{ "inv": "stone_pickaxe", "count": 1 }], "ensures": [{ "inv": "raw_iron", "count": 3 }] },
+        { "key": "smelt:iron_ingot", "tool": "smelt", "args": { "input": "raw_iron", "count": 3 }, "requires": [{ "inv": "raw_iron", "count": 1 }], "ensures": [{ "inv": "iron_ingot", "count": 3 }] },
+        { "key": "craft:iron_pickaxe", "tool": "craft", "args": { "item": "iron_pickaxe", "count": 1 }, "requires": [{ "inv": "iron_ingot", "count": 3 }, { "inv": "stick", "count": 2 }], "ensures": [{ "inv": "iron_pickaxe", "count": 1 }] }
+      ],
+      "span_from_idx": 5,
+      "span_to_idx": 7,
+      "phase_label": "idx 5 -> idx 7 (wiki prior: iron_ore -> iron_ingot -> iron_pickaxe)",
+      "smoothness": "wiki_prior",
+      "source": "wiki_prior",
+      "macro_commitment": 0.6,
+      "completion_rate": null
+    }
+  ]
+}

@@ -10,3 +10,20 @@ server-*/
 server.properties
 *.pem
 *.key
+
+# brain/ runtime artifacts (see brain/README.md): generated fresh by
+# brain/auto_loop.mjs, brain/run_win.mjs, or a brain.test.mjs run. Never
+# source — ignored so a clone + a local test/experiment run never shows up
+# as a dirty working tree, and nobody mistakes someone else's play session
+# for a source change in a diff/PR.
+/decisions.jsonl
+/pending_confirm.jsonl
+/confirm_audit.jsonl
+/policy_snapshot.json
+/agent-work-2/
+
+# brain/claim_bridge.mjs's optional agent-claim-memory integration: runtime
+# claim store (pitfall claims, ledgers), generated fresh by
+# brain/auto_loop.mjs / brain/run_win.mjs / brain/brain.test.mjs. Same
+# "never source" rule as decisions.jsonl/policy_snapshot.json above.
+/claim-memory-data/

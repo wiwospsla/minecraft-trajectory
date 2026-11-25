@@ -1,0 +1,69 @@
+name: brain CI
+
+# Standalone workflow for brain/ (the externalized-memory A/B decision
+# layer) — deliberately separate from ci.yml's generic npm run check so
+# this repo's two most "show me it actually works" artifacts (the 0-token
+# live/offline test suite and the 5-episode learning-curve simulation)
+# always get their own clearly-labeled green check, independent of
+# whatever the rest of the repo's CI does.
+#
+# Every step here is 0 LLM tokens, 0 API keys, 0 real Minecraft server
+# dependency — brain.test.mjs/formulas.test.mjs/multi_episode_eval.mjs are
+# all pure-Node, deterministic, and run entirely against tmp
+# files/in-memory state (see brain/README.md §5 "5 分钟上手").
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'brain/**'
+      - '.github/workflows/brain-ci.yml'
+  pull_request:
+    paths:
+      - 'brain/**'
+      - '.github/workflows/brain-ci.yml'
+
+jobs:
+  brain-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # No `npm ci`/`npm install` here on purpose: brain/ is a zero-new-
+      # dependency add-on to the existing harness (see brain/README.md's
+      # own "不安装任何新 npm 包" guardrail) — every brain/*.mjs file only
+      # ever imports Node core modules, sibling brain/*.mjs files, or
+      # (optionally, degrade-safe) the sibling agent-claim-memory checkout.
+      # The one exception, tools_adapter.mjs/auto_loop.mjs's imports of
+      # ../src/*, are exercised indirectly through brain.test.mjs's own
+      # fakes/doubles, not through a real `npm install` + live server.
+
+      - name: node --check every brain/*.mjs
+        run: |
+          set -e
+          for f in brain/*.mjs; do
+            echo "checking $f"
+            node --check "$f"
+          done
+
+      - name: brain/brain.test.mjs (node --test, A/B isolation + claim_bridge coverage)
+        run: node --test brain/brain.test.mjs
+
+      - name: brain/formulas.test.mjs (UCB1 formula unit tests)
+        run: node brain/formulas.test.mjs
+
+      - name: brain/multi_episode_eval.mjs (5-episode offline learning curve, 0 LLM/0 server)
+        run: node brain/multi_episode_eval.mjs
+
+      - name: confirm root decisions.jsonl/policy_snapshot.json are untouched by this run
+        run: |
+          set -e
+          if [ -f decisions.jsonl ] || [ -f policy_snapshot.json ]; then
+            echo "::error::a CI run must never leave real decisions.jsonl/policy_snapshot.json behind — brain.test.mjs backs these up/restores them, and multi_episode_eval.mjs uses an independent os.tmpdir()."
+            exit 1
+          fi
+          echo "clean: no stray decisions.jsonl/policy_snapshot.json at repo root"

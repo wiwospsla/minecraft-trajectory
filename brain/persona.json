@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "default": "balanced",
+  "presets": {
+    "balanced": {
+      "label": "均衡型（默认）",
+      "description": "不偏主线也不偏囤货，五个旋钮全部保持中性倍率，作为对照基线。",
+      "wiki_drive": 1.0,
+      "explore_appetite": 1.0,
+      "gather_hoard": 1.0,
+      "safety_caution": 1.0,
+      "momentum_bonus": 0.1
+    },
+    "companion_builder": {
+      "label": "陪伴囤货稳健型",
+      "description": "优先囤够材料、谨慎保命，主线推进权重略降，备货/安全权重明显升高。",
+      "wiki_drive": 0.8,
+      "explore_appetite": 0.9,
+      "gather_hoard": 1.6,
+      "safety_caution": 1.5,
+      "momentum_bonus": 0.08
+    },
+    "speedrunner": {
+      "label": "速通效率型",
+      "description": "死磕主线推进与效率，备货/安全权重明显降低，倾向继续同一动作族以减少来回。",
+      "wiki_drive": 1.6,
+      "explore_appetite": 1.1,
+      "gather_hoard": 0.6,
+      "safety_caution": 0.7,
+      "momentum_bonus": 0.25
+    }
+  }
+}
